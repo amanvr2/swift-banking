@@ -1,0 +1,371 @@
+https://onlinegdb.com/BJZIfhFRbO
+
+
+/**
+
+                            Online Swift Compiler.
+                Code, Compile, Run and Debug Swift script online.
+Write your code in this editor and press "Run" button to execute it.
+
+*/
+
+
+import Foundation
+
+// creating class 
+
+class User {
+
+  var userId:Int
+  var userName:String
+  var userContact:Int
+  var userAccountNo:Int
+  var userAccountType:String
+  var userCurrentBalance:Double
+  var userUtilityBill:Double
+
+  init(id:Int,name:String,contact:Int,accountno:Int,accounttype:String,currentbalance:Double,utilitybill:Double){
+
+    self.userId = id
+    self.userName = name
+    self.userContact = contact
+    self.userAccountNo = accountno
+    self.userAccountType = accounttype
+    self.userCurrentBalance = currentbalance
+    self.userUtilityBill = utilitybill
+
+  }
+  
+  // method to get all details of user
+  
+    func getAll(){
+      
+    print(" id : \(self.userId)")
+    print(" Name : \(self.userName)")
+    print(" contact : \(self.userContact)")
+    print(" Account No : \(self.userAccountNo)")
+    print(" Account Type : \(self.userAccountType)")
+    print(" Current Balance : \(self.userCurrentBalance)") 
+  
+    }
+
+}
+
+
+// main starts
+
+var userList = [User]()
+
+// function for filling data
+
+func fillData(){
+
+
+var answer = "y"
+
+repeat{
+    
+
+    print("enter the user id")
+    let id = Int(readLine()!)!
+    
+    print("enter the user name")
+    let name = readLine()!
+    
+    print("enter the user contact no")
+    let contact = Int(readLine()!)!
+    
+    print("enter the user account no")
+    let accountno = Int(readLine()!)!
+    
+    print("enter the user account type")
+    let accounttype = readLine()!
+    
+    print("enter the user Opening Balance")
+    let currentbalance = Double(readLine()!)!
+    
+    print("enter the utility bill")
+    let utilitybill = Double(readLine()!)!
+    
+    
+    
+    userList.append(User(id:id,name:name,contact:contact,accountno:accountno,accounttype:accounttype,currentbalance:currentbalance,utilitybill:utilitybill))
+    
+    print("Do you want to add more users ?  y/n")
+    answer = readLine()!
+
+}
+
+while(answer != "n")
+
+print("This is the saved data")
+
+for user in userList{
+    
+    user.getAll()
+}
+
+
+}
+
+// function to display current balance of a user
+func displayBalance(accNo:Int)->Double{
+    
+    for user in userList{
+        
+        if(user.userAccountNo == accNo){
+            
+            print("current balance is \(user.userCurrentBalance)")
+            
+            return 1.0
+        }
+     
+    }
+    return -1.0
+}
+
+// function to deposit money for a user
+func depositMoney(accNo:Int,depAmount:Double)->Double{
+    
+    for user in userList{
+        
+        if(user.userAccountNo == accNo){
+            
+            user.userCurrentBalance += depAmount
+            
+            print("Amount after deposit is \(user.userCurrentBalance)")
+            
+            return 1.0
+        }
+    }
+    
+    return -1.0
+    
+}
+
+
+// function to withdraw money for a user
+func widMoney(accNo:Int,widAmount:Double)->Double{
+    
+    for user in userList{
+        
+        if(user.userAccountNo == accNo){
+            
+            user.userCurrentBalance -= widAmount
+            
+            print("Amount after withdraw is \(user.userCurrentBalance)")
+            
+            return 1.0
+        }
+    }
+    
+    return -1.0
+    
+}
+
+
+// function to transfer money from one account to another
+
+func transferMoney(sourceAccnt:Int,destAccnt:Int,transferAmount:Double)->Double{
+    
+    for user in userList{
+        
+        if(user.userAccountNo == destAccnt){
+            
+            user.userCurrentBalance += transferAmount
+            
+            for user in userList{
+            
+                if(user.userAccountNo == sourceAccnt){
+                    
+                    user.userCurrentBalance -= transferAmount
+                    
+                 
+                }
+            
+            }
+            
+            return 1.0
+        }
+        
+        
+        
+        
+    }
+    
+    return -1.0
+    
+  
+}
+
+// function to pay bills
+func payBills(accNo:Int)->Double{
+    
+    
+    for user in userList{
+        
+        if(user.userAccountNo == accNo){
+            
+            user.userCurrentBalance -= user.userUtilityBill
+            
+            print("Bill paid successfully for Amount \(user.userUtilityBill)")
+            
+            return 1.0
+        }
+        
+    }
+    
+    
+    return -1.0
+    
+    
+}
+
+
+
+
+
+
+fillData()
+
+var choice = 0
+var answer1 = "y"
+
+repeat{
+
+print("*******************   MENU  ***********************")
+print("1. Display current balance ")
+print("2. Deposit money ")
+print("3. Draw money ")
+print("4. Transfer money ")
+print("5. Pay Bills ")
+
+
+print("Enter your choice")
+choice = Int(readLine()!)!
+
+
+
+switch choice{
+    
+    case 1:
+    
+    // getting and display current balance
+
+    print("Enter your Account Number")
+    let accNo = Int(readLine()!)!
+    
+    let currentbalance = displayBalance(accNo:accNo)
+    
+    if(currentbalance == -1.0){
+        
+        print("Account not found")
+    }
+    
+    case 2:
+    
+    // deposit money
+
+    print("Enter your Account Number")
+    let accNo = Int(readLine()!)!
+    
+    print("Enter the amount to deposit")
+    let depAmount = Double(readLine()!)!
+    
+    let depositmoney = depositMoney(accNo:accNo,depAmount:depAmount)
+    
+    if(depositmoney == -1.0){
+    
+        print("Account not found")
+        
+    }
+    
+    case 3:
+    
+    // withdraw money
+
+    print("Enter your Account Number")
+    let accNo = Int(readLine()!)!
+    
+    print("Enter the amount to draw")
+    let widAmount = Double(readLine()!)!
+    
+    let widmoney = widMoney(accNo:accNo,widAmount:widAmount)
+    
+    if(widmoney == -1.0){
+    
+        print("Account not found")
+        
+    }
+    
+    case 4:
+    
+    // transfer money
+
+
+    print("Enter your account no")
+    let sourceAccnt = Int(readLine()!)!
+    
+    print("Enter the destination account number")
+    let destAccnt = Int(readLine()!)!
+    
+    print("Enter the amount to transfer")
+    let transferAmount = Double(readLine()!)!
+    
+    let transfermoney = transferMoney(sourceAccnt:sourceAccnt,destAccnt:destAccnt,transferAmount:transferAmount)
+    
+    if(transfermoney == -1.0){
+        
+        print("Account not found")
+        
+    }
+    
+    else{
+    
+        print("Transfer done successfully ! Please find below the updated data")
+        
+        for user in userList{
+            
+            user.getAll()
+        }
+    }
+    
+    case 5:
+    
+    // pay bills
+    
+    print("Enter your Account Number")
+    let accNo = Int(readLine()!)!
+    
+    let bill = payBills(accNo:accNo)
+    
+    if(bill == -1.0){
+    
+        print("Account not found")
+        
+    }
+    
+    else{
+        
+        for user in userList{
+            
+            user.getAll()
+        }
+    }
+
+    default:
+    
+    print("wrong choice")
+    
+    
+}
+
+print("Do you want to continue ?  y/n")
+answer1 = readLine()!
+
+}
+
+while(answer1 != "n")
+
+print("Thankyou !!!!!!!!!!")
+
